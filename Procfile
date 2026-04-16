@@ -1,1 +1,1 @@
-web: gunicorn EEP-Backend.wsgi:application
+web: gunicorn exam.wsgi:application
