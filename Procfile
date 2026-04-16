@@ -1,0 +1,1 @@
+web: gunicorn EEP-Backend.wsgi:application
