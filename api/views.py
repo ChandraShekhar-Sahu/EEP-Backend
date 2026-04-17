@@ -65,7 +65,8 @@ def upload_photo(request):
 def verify_face(request):
     if request.method != "POST":
         return JsonResponse({"error": "POST required"}, status=400)
-
+    print("STATUS:", response.status_code)
+    print("RAW:", response.text)
     image = request.FILES.get("image")
     if not image:
         return JsonResponse({"error": "No image provided"}, status=400)
