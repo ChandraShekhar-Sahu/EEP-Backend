@@ -65,8 +65,7 @@ def upload_photo(request):
 def verify_face(request):
     if request.method != "POST":
         return JsonResponse({"error": "POST required"}, status=400)
-    print("STATUS:", response.status_code)
-    print("RAW:", response.text)
+    
     image = request.FILES.get("image")
     if not image:
         return JsonResponse({"error": "No image provided"}, status=400)
@@ -84,7 +83,20 @@ def verify_face(request):
                 },
                 timeout=10
             )
+            # ✅ Debug logs (AFTER response)
+        print("STATUS:", response.status_code)
+        print("RAW:", response.text)
 
+        # ✅ Safe JSON parsing
+        try:
+            data = response.json()
+        except Exception:
+            return JsonResponse({
+                "error": "Invalid response from ML service",
+                "status_code": response.status_code,
+                "raw": response.text[:200]
+            }, status=500)
+        
         return JsonResponse(response.json())
 
     except Exception as e:
