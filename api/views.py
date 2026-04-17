@@ -70,11 +70,19 @@ def verify_face(request):
     if not image:
         return JsonResponse({"error": "No image provided"}, status=400)
 
+    if not os.path.exists(REFERENCE_IMAGE_PATH):
+        return JsonResponse({"error": "Reference image not found"}, status=400)
+
     try:
-        response = requests.post(
-            ML_API,
-            files={"image": (image.name, image, image.content_type)}
-        )
+        with open(REFERENCE_IMAGE_PATH, "rb") as ref_file:
+            response = requests.post(
+                "https://face-recognition-service-beng.onrender.com/verify-face",
+                files={
+                    "reference": ("reference.jpg", ref_file, "image/jpeg"),
+                    "current": (image.name, image, image.content_type)
+                },
+                timeout=10
+            )
 
         return JsonResponse(response.json())
 
