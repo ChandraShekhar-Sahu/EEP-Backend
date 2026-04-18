@@ -76,12 +76,12 @@ def verify_face(request):
     try:
         with open(REFERENCE_IMAGE_PATH, "rb") as ref_file:
             response = requests.post(
-                "https://face-recognition-service-beng.onrender.com/verify-face",
+                "https://face-recognition-service-beng.onrender.com/api/verify_face",
                 files={
                     "reference": ("reference.jpg", ref_file, "image/jpeg"),
-                    "current": (image.name, image, image.content_type)
+                    "image": (image.name, image, image.content_type)
                 },
-                timeout=10
+                timeout=15
             )
             # ✅ Debug logs (AFTER response)
         print("STATUS:", response.status_code)
